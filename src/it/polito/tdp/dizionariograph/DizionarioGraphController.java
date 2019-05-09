@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 public class DizionarioGraphController {
 
 	Model model ;
+	
     @FXML
     private ResourceBundle resources;
 
@@ -51,6 +52,12 @@ public class DizionarioGraphController {
     		txtResult.setText("Inserisci un numero! ");
     		return;
     	}
+    	
+    	if(!model.grafoCorretto(numeroLettere)) {
+    		txtResult.setText("Grafo non corretto! Cliccare sul bottone Crea grafo ");
+    		return;
+    	}
+    	
     	if(numeroLettere == 0 ) {
     		txtResult.setText("Inserire un numero maggiore di 0! ");
     		return;
@@ -61,20 +68,25 @@ public class DizionarioGraphController {
     	}
     	
     	String parolaMax = model.findMaxDegree();
-    	List<String> listaVicini = new LinkedList<String>(model.displayNeighbours(parolaMax));
+    	List<String>listaVicini = new LinkedList<String>(model.displayNeighbours(parolaMax));
     	
     	String result ="";
-    	result += "Grado massimo: " + listaVicini.size() + " \n" + "Parola con grado massimo: " + parolaMax +" \n Vicini :";
+    	result += "Grado massimo: " + listaVicini.size() + " \n" + "Parola con grado massimo: " + parolaMax +" \nVicini : ";
     	
     	for(String s : listaVicini) {
     		result += s +", ";
     	}
+    	result = result.substring(0, result.length()-2);
     	txtResult.setText(result);
+    	
+    	
 
     }
 
     @FXML
     void doGraph(ActionEvent event) {
+    	txtResult.clear();
+     	
     	int numeroLettere;
     	try {
     	numeroLettere = Integer.parseInt(txtNumeroLettere.getText());
@@ -91,16 +103,12 @@ public class DizionarioGraphController {
     	txtResult.setText("Grafo generato correttamente! ");
     }
 
-    @FXML
-    void doReset(ActionEvent event) {
-    	txtNumeroLettere.clear();
-    	txtParola.clear();
-    	txtResult.clear();
-    }
+    
 
     @FXML
     void doVicini(ActionEvent event) {
-    	String parolaInserita = txtParola.getText();
+    	
+     	String parolaInserita = txtParola.getText();
     	int numeroLettere;
     	try {
     	numeroLettere = Integer.parseInt(txtNumeroLettere.getText());
@@ -108,6 +116,12 @@ public class DizionarioGraphController {
     		txtResult.setText("Inserisci un numero! ");
     		return;
     	}
+    	
+    	if(!model.grafoCorretto(numeroLettere)) {
+    		txtResult.setText("Grafo non corretto! Cliccare sul bottone Crea grafo ");
+    		return;
+    	}
+    	
     	if(model.getWordsList()== null && model.getGrafo()== null) {
     		txtResult.setText("Grafo non esiste! Cliccare sul bottone Crea grafo ");
     		return;
@@ -134,6 +148,14 @@ public class DizionarioGraphController {
     	}
     	risultato = risultato.substring(0, risultato.length()-2);
     	txtResult.setText(risultato);
+    	
+    }
+    
+    @FXML
+    void doReset(ActionEvent event) {
+    	txtNumeroLettere.clear();
+    	txtParola.clear();
+    	txtResult.clear();
     }
 
     @FXML

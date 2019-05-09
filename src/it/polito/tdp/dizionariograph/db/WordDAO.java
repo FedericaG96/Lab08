@@ -34,5 +34,54 @@ public class WordDAO {
 			throw new RuntimeException("Error Connection Database");
 		}
 	}
+	/* SOLUZIONE 2017/2018
+	 * Se la ricerca delle parole che differiscono di una sola lettera 
+	 * dalla parola data è effettuata direttamente in SQL
+	*/
+	/*
+	public List<String> getAllSimilarWords(String parola, int numeroLettere) {
+
+		Connection conn = ConnectDB.getConnection();
+		String sql = "SELECT nome FROM parola WHERE nome LIKE ? AND LENGTH(nome) = ?;";
+		PreparedStatement st;
+
+		try {
+
+			List<String> parole = new ArrayList<String>();
+			char[] parolaOriginale = parola.toCharArray();
+
+			System.out.println(parola);
+
+			for (int i = 0; i < parola.length(); i++) {
+
+				char temp = parolaOriginale[i];
+
+				parolaOriginale[i] = '_';	// '_' può essere qualsiasi carattere
+				String parolaDaCercare = String.copyValueOf(parolaOriginale);
+				parolaOriginale[i] = temp;
+
+				System.out.println(parolaDaCercare);
+
+				st = conn.prepareStatement(sql);
+				st.setString(1, parolaDaCercare);
+				st.setInt(2, numeroLettere);
+				ResultSet res = st.executeQuery();
+
+				while (res.next()) {
+					String nextWord = res.getString("nome");
+					if (parola.compareToIgnoreCase(nextWord) != 0)
+						parole.add(nextWord);
+				}
+			}
+
+			return parole;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Errore connessione al database");
+			throw new RuntimeException("Error Connection Database");
+		}
+	}
+	 */
 
 }
